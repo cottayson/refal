@@ -1,0 +1,113 @@
+1. Найти в‍ последовательности два наибольших значения. 
+Пример: для последовательности 1 1 2 2 3 1 ответом будет 2 и 3.
+
+$ENTRY Go { 
+= <Print <TwoMax 1 1 2 2 3 1> >;
+}
+
+TwoMax {
+  '' = Empty;
+  e.seq = <SecondMax e.seq> 'è ' <Max e.seq>;
+  e.1 = e.1 STOP;
+}
+
+SecondMax {
+  '' = Empty;
+  e.seq = <Max <Del <Max e.seq> e.seq>>;
+  e.1 = e.1 STOP;
+}
+
+Max {
+  '' = Empty;
+  s.max = s.max;
+  s.max s.val e.seq, <Compare s.val s.max>: '+' = 
+	  <Max s.val e.seq>;
+  s.max s.val e.seq = 
+	  <Max s.max e.seq>;
+  e.1 = e.1 STOP;
+}
+
+Del {
+  s.value e.1 s.value e.2 = <Del s.value e.1 e.2>;
+  s.value e.1 = e.1;
+  e.1 = e.1 Error;
+}
+
+
+
+2. Создать последовательность из‍ N‍ элементов последовательности Фибоначчи.
+
+$ENTRY Go { 
+= <Print <Fib 8>>;
+}
+
+Fib {
+  0 e.seq = e.seq OK;
+  s.count e.middle s.a s.b = 
+	  <Fib <- s.count 1> e.middle s.a s.b <+ s.a s.b> >;
+  s.count s.a = <Fib <- s.count 1> s.a 1>;
+  s.count = <Fib <- s.count 1> 1>;
+  e.1 = e.1 STOP;
+}
+
+3. Найти сумму элементов последовательности, имеющих чётную позицию.
+
+$ENTRY Go { 
+= <Print <DoEvenSum 1 2 3 4>>;
+}
+
+DoEvenSum {
+  '' = Empty;
+  e.1 = <Sum L 0 e.1>;
+  e.1 = e.1 STOP;
+}
+
+Sum {
+  L s.acc = s.acc;
+  R s.acc = s.acc;
+  L s.acc s.left e.right = <Sum R s.acc e.right>;
+  R s.acc s.left e.right = <Sum L <+ s.acc s.left> e.right>;
+  e.1 = e.1 STOP;
+}
+
+4. Переместить элементы последовательности по‍ кругу на‍ введённое пользователем число. 
+Пример: для объектного выражения 1 2 3 4 5 и‍ числа‍ 1 ответом будет 5 1 2 3 4. Задачу решить без использования функции First.
+
+$ENTRY Go { 
+= <Print <Rotate 3 1 2 3 4 5>>;
+}
+
+Rotate {
+  '' = Empty;
+  0 e.seq = e.seq;
+  s.count e.seq s.last = 
+	  <Rotate <- s.count 1> s.last e.seq>;
+}
+
+5. Переместить элементы последовательности по‍ кругу на‍ введённое пользователем число. 
+Пример: для последовательности 1 2 3 4 5 и‍ числа 3 ответом будет 3 4 5 1 2. Задачу решить с‍ использованием функции First. При вводе числа, большего длины выражения, следует выводить сообщение об‍ ошибке.
+
+$ENTRY Go { 
+= <Print <Rotate 3 1 2 3 4 5>>;
+}
+checkRotate {
+  s.count e.seq, 
+    <Compare s.count <Len e.seq>>: '+' = False;
+  e.1 = True;
+}
+Rotate {
+  e.1, <checkRotate e.1>: False = Error;
+  e.1 = <Swap <Last e.1>>;
+  e.1 = e.1 STOP;
+}
+Swap {
+  (e.1) e.2 = e.2 e.1;
+  e.1 = e.1 STOP;
+}
+Fst {
+  s.1 e.1 = s.1;
+  e.1 = e.1;
+}
+Len {
+  e.1 = <Fst <Lenw e.1>>;
+}
