@@ -1,0 +1,31 @@
+$ENTRY Go { 
+= <Print <Rotate 3 1 2 3 4 5>>;
+}
+
+checkRotate {
+  s.count e.seq, 
+    <Compare s.count <Len e.seq>>: '+' = False;
+  e.1 = True;
+}
+
+Rotate {
+  e.1, <checkRotate e.1>: False = Error;
+  e.1 = <Swap <Last e.1>>;
+  e.1 = e.1 STOP;
+}
+
+Swap {
+  (e.1) e.2 = e.2 e.1;
+  e.1 = e.1 STOP;
+}
+
+
+Fst {
+  s.1 e.1 = s.1;
+  e.1 = e.1;
+}
+Len {
+  e.1 = <Fst <Lenw e.1>>;
+}
+
+/* <Compare 1 2> -> '-' */
