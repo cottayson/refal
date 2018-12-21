@@ -1,0 +1,110 @@
+6. Удалить все нули из‍ последовательности цифр.
+
+$ENTRY Go { 
+= <Print <DelZeros 1 0 0 0 2 0>>;
+}
+
+DelZeros {
+  e.1 0 e.2 = <DelZeros e.1 e.2>;
+  e.1 = e.1;
+}
+
+7. Дана последовательность длинных чисел (каждое из‍ которых завёрнуто в‍ скобочный терм). После каждого отрицательного числа вставить число 33.
+
+$ENTRY Go { 
+= <Print <Add33 ('-'35756) (5567) ('-'299)> >;
+}
+
+Add33 {
+  '' = ;
+  e.left ('-'s.number) e.right = 
+	e.left ('-'s.number) (33) <Add33 e.right>;
+  e.1 = e.1 STOP;
+}
+
+8. Дана последовательность чисел. Найти среднее арифметическое элементов списка.
+
+$ENTRY Go { 
+= <Print <Mean 10 30>>;
+}
+Mean {
+  '' = Empty;
+  e.seq = <Div <Sum e.seq> <Len e.seq>>;
+  e.1 = e.1 STOP;
+}
+Sum {
+  '' = 0;
+  s.accum = s.accum;
+  s.accum s.left e.right = <Sum <+ s.accum s.left> e.right>;
+  e.1 = e.1;
+}
+Fst {
+  s.1 e.1 = s.1;
+  e.1 = e.1;
+}
+Len {
+  e.1 = <Fst <Lenw e.1>>;
+}
+
+9. Дана последовательность чисел. Определить, является‍ ли он возрастающей последовательностью. 
+Примеры: 1 4 8 10 — является, 1 8 4 10 — не‍ является, пустое выражение — является, 3 (выражение из‍ одного элемента) — является.
+
+$ENTRY Go { 
+= <Print <Inc 1 2 3 4>>;
+}
+
+Inc {
+  '' = True;
+  s.1 = True;
+  s.1 s.1 e.right = False s.1 '=' s.1;
+  s.1 s.2 e.right, <Compare s.1 s.2>: '+' = False s.1 '>' s.2;
+  s.1 e.right = <Inc e.right>;
+  e.1 = Error;
+}
+
+10. Написать программу, которая определяет количество учеников в‍ классе, чей рост превышает средний.
+
+$ENTRY Go {
+= <Print <AboveMean 100 200 290>>;
+}
+AboveMean {
+  '' = Empty;
+  e.seq = <Above <Mean e.seq> e.seq>;
+  e.1 = e.1 STOP;
+}
+/* 100 200 300 100 -> 2 */
+Above {
+  '' = Empty;
+  s.value e.seq = <DoAbove 0 s.value e.seq>;
+  e.1 = e.1 STOP;
+}
+DoAbove {
+  '' = Empty;
+  s.count s.value = s.count;
+  
+  s.count s.value s.1 e.seq, <Compare s.1 s.value>: '+' = 
+	<DoAbove <+ s.count 1> s.value e.seq>;
+	
+  s.count s.value s.1 e.seq = 
+	<DoAbove s.count s.value e.seq>;
+	
+  e.1 = e.1 STOP;
+}
+Mean {
+  '' = Empty;
+  e.seq = <Div <Sum e.seq> <Len e.seq>>;
+  e.1 = e.1 STOP;
+}
+Sum {
+  '' = 0;
+  s.accum = s.accum;
+  s.accum s.left e.right = <Sum <+ s.accum s.left> e.right>;
+  e.1 = e.1;
+}
+Fst {
+  s.1 e.1 = s.1;
+  e.1 = e.1;
+}
+Len {
+  e.1 = <Fst <Lenw e.1>>;
+}

@@ -1,0 +1,19 @@
+//FROM Library
+$EXTERN ReadLine, FWriteLine, FOpen, Print, Arg;
+
+$ENTRY Go { = 
+  <Func 
+    <ReadLine>
+  >;
+}
+
+Func {
+  e.Line = 
+    <Print e.Line> 
+    <FWriteLine 
+      <FOpen 'w' <Arg 1>>
+      e.Line
+    >;
+}
+
+/*<WriteLine <ReadLine>>;*/
